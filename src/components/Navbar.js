@@ -11,7 +11,7 @@ function Navbar() {
         <h4 className="pl1">Minutero</h4>
       </div>
 
-      <img className="mooveItNavybg pt4 mt2 h1" src={logo} alt="Moove-it logo" />
+      <img className="mooveItNavybg pt4 mt2 h1" src={logo} alt="Moove-it logo" onClick={() => window.open('https://moove-it.com/', '_blank')}/>
 
       <div className="flex-grow pa2 flex items-center">
         <div className="shadow-hover h2 flex items-center f6 mooveItPink hover-white bg-animate no-underline pv1 ph3 ma2 br-pill b--black" />
