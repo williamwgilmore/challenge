@@ -29,14 +29,26 @@ export function createTimeEntry(timeEntry) {
 }
 
 export function fetchTimeEntries() {
-  const allTimeEntries = {};
+  const allTimeEntries = [];
+
+  function sortByStartDate(a,b){
+    if (a.startTime > b.startTime)
+      return -1;
+    if (a.startTime < b.startTime)
+      return 1;
+    return 0;
+  }
+
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < localStorage.length; i++) {
     const id = localStorage.key(i);
     if (!id.includes(KEY_PREFIX)) continue; // eslint-disable-line no-continue
+
     const entry = getTimeEntry(id);
-    allTimeEntries[id] = entry;
+    allTimeEntries.push(entry);
   }
+
+  allTimeEntries.sort(sortByStartDate);
 
   return allTimeEntries;
 }
