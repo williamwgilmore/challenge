@@ -29,8 +29,12 @@ export function createTimeEntry(timeEntry) {
 }
 
 export function fetchTimeEntries() {
+  //create an array to store and then sort entries
   const allTimeEntries = [];
+  const allTimeKeys = [];
+  let identifier = 'id';
 
+  //sort by start time function
   function sortByStartDate(a,b){
     if (a.startTime > b.startTime)
       return -1;
@@ -40,15 +44,27 @@ export function fetchTimeEntries() {
   }
 
   // eslint-disable-next-line no-plusplus
+  //Put all the values into an array, excluding everything without the prefix
   for (let i = 0; i < localStorage.length; i++) {
     const id = localStorage.key(i);
     if (!id.includes(KEY_PREFIX)) continue; // eslint-disable-line no-continue
 
-    const entry = getTimeEntry(id);
+    let entry = getTimeEntry(id);
+    //manually add the id so that it is incudled in the sort
+    entry[identifier] = id;
     allTimeEntries.push(entry);
   }
 
+  //sort entries
   allTimeEntries.sort(sortByStartDate);
 
-  return allTimeEntries;
+  //put the sorted entries back into an object
+  let sortedTimeEntries = {};
+  for (let j=0; j < allTimeEntries.length; j++){
+    const id = allTimeEntries[j].id;
+    const sortedEntry = getTimeEntry(id);
+    sortedTimeEntries[id] = sortedEntry;
+  }
+
+  return sortedTimeEntries;
 }
