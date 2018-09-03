@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { displayDate, displayStartAndEndTimes, displayTimeElapsed } from '../utils/timeUtils';
+import { removeTimeEntry, fetchTimeEntries } from '../utils/timerUtils';
 
 export default class TimerHistoryItem extends Component {
+  constructor(props){
+    super(props);
+
+    this.deleteEntry = this.deleteEntry.bind(this);
+  }
+
+  deleteEntry(){
+    removeTimeEntry(this.props.id);
+    setTimeout(fetchTimeEntries());
+  }
+
   render() {
     const {
-      billable, categories, description, project, endTime, startTime,
+      billable, categories, description, project, endTime, startTime, id,
     } = this.props;
 
     const isTimeOut = endTime !== 0;
@@ -23,10 +35,11 @@ export default class TimerHistoryItem extends Component {
         <div>{project && project.name}</div>
         <div>{renderCategories}</div>
         <div>{billable && '$'}</div>
-
         <div>{displayDate(startTime)}</div>
         <div>{displayStartAndEndTimes(startTime, endTime)}</div>
         <div>{displayTimeElapsed(startTime, endTime)}</div>
+        <div>{id}</div>
+        <button onClick = {this.deleteEntry}>Trash</button>
       </div>
     );
   }
