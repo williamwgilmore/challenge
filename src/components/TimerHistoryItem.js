@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { displayDate, displayStartAndEndTimes, displayTimeElapsed } from '../utils/timeUtils';
-import { removeTimeEntry, fetchTimeEntries } from '../utils/timerUtils';
+import { removeTimeEntry } from '../utils/timerUtils';
 
 export default class TimerHistoryItem extends Component {
   constructor(props){
@@ -16,6 +16,8 @@ export default class TimerHistoryItem extends Component {
 
   deleteEntry(){
     removeTimeEntry(this.props.id);
+    //Reloading the entire page to update the page, I'll add a callback later if there is time
+    window.location.reload();
   }
 
   render() {
@@ -41,11 +43,10 @@ export default class TimerHistoryItem extends Component {
         <div>{displayDate(startTime)}</div>
         <div>{displayStartAndEndTimes(startTime, endTime)}</div>
         <div>{displayTimeElapsed(startTime, endTime)}</div>
-        <div>{id}</div>
         <FontAwesomeIcon className={'trashIcon'}
         onClick={this.deleteEntry}
         icon={faTrash}
-        size="x"/>
+        size="1x"/>
       </div>
     );
   }

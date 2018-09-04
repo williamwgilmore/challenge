@@ -21,6 +21,30 @@ export default class Timer extends Component {
     this.toggleTimerMode = this.toggleTimerMode.bind(this);
   }
 
+  //When the component loads, check to see if the timer is running
+  componentDidMount(){
+    //timeState - true (running) / false(stopped)
+    let timeState = JSON.parse(localStorage.getItem('running'));
+    //startTime - time started / null
+    let startTime = localStorage.getItem('startTime');
+
+    //sets our state to the local storage if the item is in local storage
+    if (timeState === null){
+      localStorage.setItem('running', false);
+    } else {
+      this.setState({ isTiming: timeState });
+    }
+
+    // if the timer is running, we also need to get the start time
+    if (timeState){
+      if (startTime === null){
+        localStorage.setItem('startTime', null);
+      } else {
+        this.props.setStartTime(startTime);
+      }
+    }
+  }
+
   handleTimerClick() {
     const { isTiming } = this.state;
     const { setStartTime, setEndTime } = this.props;
@@ -28,11 +52,23 @@ export default class Timer extends Component {
     if (!isTiming) {
       this.setState({ isTiming: true });
       const startTime = createTimestamp();
+
+      //Set the start time before it's run through setStartTime
+      localStorage.setItem('startTime', startTime);
+      
       setStartTime(startTime);
+
+      //Set the timer to running in case the page is refreshed
+      localStorage.setItem('running', true);
+      
     } else {
       this.setState({ isTiming: false });
       const endTime = createTimestamp();
       setEndTime(endTime);
+
+      //set the timer status to stopped in local storage
+      localStorage.setItem('running', false);
+      localStorage.setItem('startTime', null);
     }
   }
 
