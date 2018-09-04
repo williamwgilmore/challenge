@@ -21,6 +21,18 @@ export default class TimerMode extends Component {
     clearInterval(this.timer);
   }
 
+  //If the page was refreshed, we need to resume the timer
+  componentWillMount(){
+    const { isTiming, startTime } = this.props;
+
+    if (isTiming){
+      this.timer = setInterval(() => {
+        const currentTime = createTimestamp();
+        this.setState({ currentTime });
+      }, 1000);
+    }
+  }
+
   startTimer() {
     const { handleTimerClick } = this.props;
 
