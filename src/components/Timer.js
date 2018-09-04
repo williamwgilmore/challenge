@@ -22,7 +22,7 @@ export default class Timer extends Component {
   }
 
   //When the component loads, check to see if the timer is running
-  componentDidMount(){
+  componentWillMount(){
     //timeState - true (running) / false(stopped)
     let timeState = JSON.parse(localStorage.getItem('running'));
     //startTime - time started / null
